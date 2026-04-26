@@ -25,25 +25,34 @@ spec:
         }
 
         stage('Start App & Test URL') {
-            steps {
-                container('node') {
-                    sh '''
-                        apk add --no-cache curl
+    steps {
+        container('node') {
+            sh '''
+                apk add --no-cache curl
 
-                        node app.js > app.log 2>&1 &
-                        APP_PID=$!
+                node app.js > app.log 2>&1 &
+                APP_PID=$!
 
-                        for i in $(seq 1 10); do
-                          curl -f http://localhost:3001 && exit 0
-                          sleep 2
-                        done
+                for i in $(seq 1 10); do
+                  if curl -f http://localhost:3001; then
+                    kill $APP_PID || true
+                    exit 0
+                  fi
 
-                        kill $APP_PID
-                        exit 1
-                    '''
-                }
-            }
+                  echo "App not ready yet..."
+                  cat app.log || true
+                  sleep 2
+                done
+
+                echo "App failed to start. Logs:"
+                cat app.log || true
+
+                kill $APP_PID || true
+                exit 1
+            '''
         }
+    }
+}
     }
 
     post {
