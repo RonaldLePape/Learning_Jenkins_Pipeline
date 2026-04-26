@@ -1,7 +1,17 @@
 pipeline {
     agent {
-        docker {
-            image 'node:20-alpine'
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: node
+      image: node:20-alpine
+      command:
+        - cat
+      tty: true
+'''
         }
     }
 
