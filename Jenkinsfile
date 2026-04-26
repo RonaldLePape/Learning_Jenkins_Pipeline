@@ -30,7 +30,7 @@ spec:
             sh '''
                 apk add --no-cache curl
 
-                node app.js > app.log 2>&1 &
+                node App.js > app.log 2>&1 &
                 APP_PID=$!
 
                 for i in $(seq 1 10); do
