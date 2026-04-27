@@ -21,6 +21,11 @@ spec:
       command:
         - cat
       tty: true
+    - name: kubectl
+      image: bitnami/kubectl:latest
+      command:
+        - cat
+      tty: true
 '''
     }
 }
@@ -112,6 +117,14 @@ EOF
                     }
                 }
             }
+        }
+
+        stage('Test Kubernetes Access') {
+           steps {
+               container('kubectl') {
+                   sh 'kubectl get pods -n my-app'
+               }
+           }
         }
     }
     
