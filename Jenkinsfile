@@ -59,7 +59,7 @@ spec:
             steps {
                 container('node') {   // keep this since you're using K8s agent
                     withCredentials([usernamePassword(
-                        credentialsId: 'dockerhub-creds',
+                        credentialsId: 'docker-hub-creds',
                         usernameVariable: 'DOCKER_USER',
                         passwordVariable: 'DOCKER_PASS'
                     )]) {
