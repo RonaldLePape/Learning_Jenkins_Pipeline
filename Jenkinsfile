@@ -2,16 +2,16 @@ pipeline {
     agent {
         kubernetes {
             yaml '''
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-    - name: node
-      image: node:20-alpine
-      command:
-        - cat
-      tty: true
-'''
+                apiVersion: v1
+                kind: Pod
+                spec:
+                containers:
+                    - name: node
+                    image: node:20-alpine
+                    command:
+                        - cat
+                    tty: true
+                '''
         }
     }
 
@@ -25,34 +25,34 @@ spec:
         }
 
         stage('Start App & Test URL') {
-    steps {
-        container('node') {
-            sh '''
-                apk add --no-cache curl
+            steps {
+                container('node') {
+                    sh '''
+                        apk add --no-cache curl
 
-                node app.js > app.log 2>&1 &
-                APP_PID=$!
+                        node app.js > app.log 2>&1 &
+                        APP_PID=$!
 
-                for i in $(seq 1 10); do
-                  if curl -f http://localhost:3001; then
-                    kill $APP_PID || true
-                    exit 0
-                  fi
+                        for i in $(seq 1 10); do
+                        if curl -f http://localhost:3001; then
+                            kill $APP_PID || true
+                            exit 0
+                        fi
 
-                  echo "App not ready yet..."
-                  cat app.log || true
-                  sleep 2
-                done
+                        echo "App not ready yet..."
+                        cat app.log || true
+                        sleep 2
+                        done
 
-                echo "App failed to start. Logs:"
-                cat app.log || true
+                        echo "App failed to start. Logs:"
+                        cat app.log || true
 
-                kill $APP_PID || true
-                exit 1
-            '''
+                        kill $APP_PID || true
+                        exit 1
+                    '''
+                }
+            }
         }
-    }
-}
     }
 
     post {
