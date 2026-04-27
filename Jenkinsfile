@@ -1,19 +1,19 @@
 pipeline {
     agent {
-        kubernetes {
-            yaml '''
-                apiVersion: v1
-                kind: Pod
-                spec:
-                containers:
-                  - name: node
-                    image: node:20-alpine
-                    command:
-                        - cat
-                    tty: true
-                '''
-        }
+    kubernetes {
+        yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: node
+      image: node:20-alpine
+      command:
+        - cat
+      tty: true
+'''
     }
+}
 
     stages {
         stage('Install Dependencies') {
