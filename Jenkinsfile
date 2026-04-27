@@ -130,6 +130,22 @@ EOF
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+           steps {
+                container('kubectl') {
+                sh '''
+                   kubectl apply -f k8s/deployment.yaml
+                   kubectl apply -f k8s/service.yaml
+
+                   kubectl -n my-app set image deployment/node-app \
+                   node-app=ronaldlepape/jenkins-node-app:${BUILD_NUMBER}
+
+                   kubectl -n my-app rollout status deployment/node-app
+                '''
+                }
+            }
+        }
     }
     
 
