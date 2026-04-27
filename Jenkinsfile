@@ -6,7 +6,7 @@ pipeline {
                 kind: Pod
                 spec:
                 containers:
-                    - name: node
+                  - name: node
                     image: node:20-alpine
                     command:
                         - cat
