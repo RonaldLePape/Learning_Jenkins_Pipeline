@@ -82,13 +82,13 @@ spec:
         }
 
         stage('Docker build & push') {
-    steps {
-        container('kaniko') {
-            withCredentials([usernamePassword(
-                credentialsId: 'docker-hub-creds',
-                usernameVariable: 'DOCKER_USER',
-                passwordVariable: 'DOCKER_PASS'
-            )]) {
+            steps {
+                container('kaniko') {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'docker-hub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )]) {
                 sh '''
                     mkdir -p /kaniko/.docker
 
@@ -109,12 +109,10 @@ EOF
                       --destination "$DOCKER_USER/jenkins-node-app:${BUILD_NUMBER}" \
                       --destination "$DOCKER_USER/jenkins-node-app:latest"
                 '''
+                    }
+                }
             }
         }
-    }
-}
-        
-
     }
     
 
