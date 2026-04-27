@@ -22,7 +22,7 @@ spec:
         - cat
       tty: true
     - name: kubectl
-      image: bitnami/kubectl:latest
+      image: alpine/k8s:1.30.0
       command:
         - cat
       tty: true
@@ -122,9 +122,13 @@ EOF
         stage('Test Kubernetes Access') {
            steps {
                container('kubectl') {
-                   sh 'kubectl get pods -n my-app'
-               }
-           }
+                   sh '''
+                   kubectl version --client
+                   kubectl auth can-i get pods -n my-app
+                   kubectl get pods -n my-app
+                   '''
+                }
+            }
         }
     }
     
