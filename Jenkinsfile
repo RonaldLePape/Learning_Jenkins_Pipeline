@@ -11,6 +11,11 @@ spec:
       command:
         - cat
       tty: true
+    - name: docker
+      image: docker:27-cli
+      command:
+        - cat
+      tty: true
 '''
     }
 }
@@ -57,7 +62,7 @@ spec:
 
         stage('Docker Login') {
             steps {
-                container('node') {   // keep this since you're using K8s agent
+                container('docker') {  
                     withCredentials([usernamePassword(
                         credentialsId: 'docker-hub-creds',
                         usernameVariable: 'DOCKER_USER',
