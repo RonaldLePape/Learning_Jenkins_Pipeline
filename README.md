@@ -7,6 +7,6 @@ CI/CD with Jenkins : building, testing and deploying a NodeJS app.
 - **Runtime**: app runs in a Node container, deployed in Kubernetes
 - **CI/CD**:
   - Jenkins is deployed "over kubernetes" with Helm chart : Jenkins agents are dynamic pods
-  - Linting with **ESLint**
-  - Security and Quality with **SonarQube**
-  - **Kaniko** is used to build & push Docker image to **DockerHub**
+  - **ESLint** for linting
+  - **SonarQube** for security and quality
+  - **Kaniko** for build & push to **DockerHub**
